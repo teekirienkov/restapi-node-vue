@@ -27,12 +27,15 @@ new Vue({
     }
   },
   methods: {
-    createContact() {
-      const {...contact} = this.form; // создаем объект contact деструктуризацией
+    async createContact() {
+      const {...contact} = this.form; // создаем объект contact деструктуризацией из формы (inputs)
 
-      this.contacts.push({...contact, id: Date.now(), marked: false});
+      // POST
+      const newContact = await request('/api/contacts', 'POST', contact) // отправляем данные на сервер
 
-      this.form.name = ''; // очищаем inputs
+      this.contacts.push(newContact);
+
+      this.form.name = '';
       this.form.value = '';
     },
     markContact(id) {
@@ -40,7 +43,7 @@ new Vue({
       mark.marked = true;
     },
     removeContact(id) {
-      this.contacts = this.contacts.filter(elem => elem.id !== id)
+      this.contacts = this.contacts.filter(elem => elem.id !== id); // удаляем элемент из списка с помощью фильтрации
     }
   },
   async mounted() {

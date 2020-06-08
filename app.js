@@ -1,16 +1,28 @@
 const express = require('express');
 const path = require('path');
+const {v4} = require('uuid');
 const app = express();
 
 // импровизированная база данных
 const CONTACTS = [
-  {id: 1, name: 'Timur', value: 'admin', marked: false}
-]
+  {id: v4(), name: 'Timur', value: 'admin', marked: false}
+];
 
-// endpoint (url)
+app.use(express.json()); // для того чтобы request в endpoints работал нужно прописать эту функцию
+
+// endpoints (url)
+// GET
 app.get('/api/contacts', (req, res) => {   // /api/contacts - route
   res.status(200).json(CONTACTS)
-})
+});
+// POST
+app.post('/api/contacts', (req, res) => {
+  const contact = {...req.body, id: v4(), marked: false};
+
+  CONTACTS.push(contact);
+
+  res.status(201).json(contact); // status 201 - elem создан
+});
 
 app.use(express.static(path.resolve(__dirname, 'client'))); // делаем папку статической (чтобы запускались frontend модули js)
 
