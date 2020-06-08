@@ -7,12 +7,19 @@ new Vue({
       form: {
         name: '',
         value: ''
-      }
+      },
+      contacts: []
     }
   },
   methods: {
     createContact() {
-      console.log(this.form)
+      const {...contact} = this.form; // создаем объект contact деструктуризацией
+      console.log(contact);
+
+      this.contacts.push({...contact, id: Date.now()});
+
+      this.form.name = ''; // очищаем inputs
+      this.form.value = '';
     }
   }
 })
