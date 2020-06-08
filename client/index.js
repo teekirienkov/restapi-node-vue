@@ -28,12 +28,11 @@ new Vue({
       this.form.value = '';
     },
     markContact(id) {
-      console.log('click отметить')
-      const mark = this.contacts.find(c => c.id === id);
+      const mark = this.contacts.find(elem => elem.id === id); // находим определенный элемент по клику и id
       mark.marked = true;
     },
     removeContact(id) {
-
+      this.contacts = this.contacts.filter(elem => elem.id !== id)
     }
   }
 })
