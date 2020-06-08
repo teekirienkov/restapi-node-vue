@@ -25,6 +25,12 @@ app.post('/api/contacts', (req, res) => {
 app.delete('/api/contacts/:id', (req, res) => {
   CONTACTS = CONTACTS.filter(elem => elem.id !== req.params.id);
   res.status(200).json({message: 'Контакт был удален'})
+});
+// PUT
+app.put('/api/contacts/:id', (req, res) => {
+  const idx = CONTACTS.findIndex(i => i.id === req.params.id);
+  CONTACTS[idx] = req.body;
+  res.json(CONTACTS[idx]);
 })
 
 app.use(express.static(path.resolve(__dirname, 'client'))); // делаем папку статической (чтобы запускались frontend модули js)

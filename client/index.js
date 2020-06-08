@@ -38,9 +38,13 @@ new Vue({
       this.form.name = '';
       this.form.value = '';
     },
-    markContact(id) {
-      const mark = this.contacts.find(elem => elem.id === id); // находим определенный элемент по клику и id
-      mark.marked = true;
+    async markContact(id) {
+      const contact = this.contacts.find(elem => elem.id === id); // находим определенный элемент по клику и id
+      const updated = await request(`/api/contacts/${id}`, 'PUT', {
+        ...contact, // получение текущего контакта
+        marked: true // отправляем эти данные на сервер
+      });
+      contact.marked = updated.marked;
     },
     async removeContact(id) {
       await request(`/api/contacts/${id}`, 'DELETE')
