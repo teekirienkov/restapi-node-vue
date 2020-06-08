@@ -42,7 +42,8 @@ new Vue({
       const mark = this.contacts.find(elem => elem.id === id); // находим определенный элемент по клику и id
       mark.marked = true;
     },
-    removeContact(id) {
+    async removeContact(id) {
+      await request(`/api/contacts/${id}`, 'DELETE')
       this.contacts = this.contacts.filter(elem => elem.id !== id); // удаляем элемент из списка с помощью фильтрации
     }
   },

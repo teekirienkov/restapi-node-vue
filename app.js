@@ -4,7 +4,7 @@ const {v4} = require('uuid');
 const app = express();
 
 // импровизированная база данных
-const CONTACTS = [
+let CONTACTS = [
   {id: v4(), name: 'Timur', value: 'admin', marked: false}
 ];
 
@@ -18,11 +18,14 @@ app.get('/api/contacts', (req, res) => {   // /api/contacts - route
 // POST
 app.post('/api/contacts', (req, res) => {
   const contact = {...req.body, id: v4(), marked: false};
-
   CONTACTS.push(contact);
-
   res.status(201).json(contact); // status 201 - elem создан
 });
+// DELETE
+app.delete('/api/contacts/:id', (req, res) => {
+  CONTACTS = CONTACTS.filter(elem => elem.id !== req.params.id);
+  res.status(200).json({message: 'Контакт был удален'})
+})
 
 app.use(express.static(path.resolve(__dirname, 'client'))); // делаем папку статической (чтобы запускались frontend модули js)
 
